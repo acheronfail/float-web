@@ -49,6 +49,31 @@
       accept={supportedMimeTypeString}
     />
   </div>
+  <section aria-labelledby="native-apps-title" class="my-6 w-full max-w-xl rounded-lg border bg-slate-900 p-4">
+    <h3 id="native-apps-title" class="text-lg font-bold">Get the Float View app</h3>
+    <p class="mt-2 text-sm">
+      Connect to your VESC, watch live telemetry, record and review rides, and configure Refloat with the native app.
+    </p>
+    <div class="mt-4 flex flex-wrap justify-center gap-3">
+      <a
+        href="https://apps.apple.com/app/id6823768488"
+        class="rounded border bg-slate-700 px-4 py-2 text-sm font-bold hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300"
+      >
+        iOS · App Store
+      </a>
+      <a
+        href="https://apps.apple.com/app/id6823913513"
+        class="rounded border bg-slate-700 px-4 py-2 text-sm font-bold hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300"
+      >
+        macOS · Mac App Store
+      </a>
+      <!-- TODO: Replace this placeholder with the Google Play link before merging. -->
+      <span class="rounded border px-4 py-2 text-sm text-slate-400">Android · Coming soon on Google Play</span>
+    </div>
+    <p class="mt-3 text-xs">
+      <Link href="https://github.com/acheronfail/float-view-mobile" label="Source code and more installation options" />
+    </p>
+  </section>
   <div class="grow flex flex-col justify-end items-center text-left text-xs">
     <h4 class="font-bold my-2 text-sm">Some notes:</h4>
     <ul class="list-disc list-inside">

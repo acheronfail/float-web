@@ -13,6 +13,21 @@ Main features:
 - Can be saved as an applet on mobile devices for offline use
 - And more!
 
+## Native apps
+
+[Float View Mobile] is also available as a native app for iOS, macOS, and Android.
+Connect to your VESC over Bluetooth, watch live telemetry, record and review rides,
+and configure Refloat.
+
+- [Download for iOS on the App Store](https://apps.apple.com/app/id6823768488)
+- [Download for macOS on the Mac App Store](https://apps.apple.com/app/id6823913513)
+- Android: Coming soon on Google Play
+
+<!-- TODO: Replace the Android placeholder with the Google Play link before merging. -->
+
+See the [native app repository](https://github.com/acheronfail/float-view-mobile)
+for source code, requirements, and alternative installation options.
+
 ## Demo
 
 ![demo image of Float View in browser](./.github/demo.jpg)
