@@ -41,4 +41,4 @@ Now you'll have `Float View` all the time, even offline!
 [VESC Tool]: https://vesc-project.com/vesc_tool
 [Float View Mobile]: https://github.com/acheronfail/float-view-mobile
 
-Float View Mobile CSV exports work with or without GPS. Enable GPS in Mobile's export settings to include a map route. Native `.floatview` archives are not supported yet.
+Float View Mobile CSV exports work with or without GPS, including CSV files compressed into a ZIP. ZIPs must contain a single CSV. Enable GPS in Mobile's export settings to include a map route. Native `.floatview` archives are not supported yet.

@@ -16,9 +16,9 @@ export interface ParseResult {
 }
 
 export enum SupportedMimeTypes {
-  /** Float Control's CSV */
+  /** Supported CSV ride exports */
   Csv = 'text/csv',
-  /** Float Control's Zipped CSV */
+  /** Zipped CSV ride exports */
   Zip1 = 'application/zip',
   Zip2 = 'application/x-zip-compressed',
   /** Floaty's JSON */
@@ -31,60 +31,38 @@ export const supportedMimeTypeString = supportedMimeTypes.join(',');
 export async function parse(file: File): Promise<ParseResult> {
   const lowerName = file.name.toLowerCase();
   if (file.type === SupportedMimeTypes.Zip1 || file.type === SupportedMimeTypes.Zip2 || lowerName.endsWith('.zip')) {
-    const fileMap = fflate.unzipSync(new Uint8Array(await file.arrayBuffer()));
-    const fileList = Object.keys(fileMap);
-    if (fileList.length !== 1) {
+    try {
+      const fileMap = fflate.unzipSync(new Uint8Array(await file.arrayBuffer()), {
+        filter: ({ name }) => {
+          const parts = name.split('/');
+          const basename = parts.at(-1)!;
+          return (
+            basename !== '' && !parts.includes('__MACOSX') && basename !== '.DS_Store' && !basename.startsWith('._')
+          );
+        },
+      });
+      const fileList = Object.keys(fileMap);
+      if (fileList.length !== 1 || !fileList[0]!.toLowerCase().endsWith('.csv')) {
+        return {
+          source: DataSource.None,
+          data: [],
+          units: Units.Metric,
+          errors: [new ParseError('Expected a zip containing a single CSV ride export!', file)],
+        };
+      }
+      return await parseCsv(new TextDecoder().decode(fileMap[fileList[0]!]!));
+    } catch (error) {
       return {
         source: DataSource.None,
         data: [],
         units: Units.Metric,
-        errors: [new ParseError('Expected a zip containing a single CSV file from Float Control!', file)],
+        errors: [new ParseError('Failed to read ZIP ride export!', error)],
       };
     }
-
-    const unzippedBytes = fileMap[fileList[0]!]!;
-    const parsed = await parseFloatControlCsv(new TextDecoder().decode(unzippedBytes));
-    return {
-      source: DataSource.FloatControl,
-      data: parsed.csv.data,
-      units: parsed.units,
-      errors: parsed.errors,
-    };
   }
 
   if (file.type === SupportedMimeTypes.Csv || lowerName.endsWith('.csv')) {
-    const text = await file.text();
-    switch (detectCsvFormat(text)) {
-      case CsvFormat.Floaty:
-        return await parseFloatyCsv(text);
-      case CsvFormat.FloatControl: {
-        const parsed = await parseFloatControlCsv(text);
-        return {
-          source: DataSource.FloatControl,
-          data: parsed.csv.data,
-          units: parsed.units,
-          errors: parsed.errors,
-        };
-      }
-      case CsvFormat.VescTool:
-        return await parseVescToolCsv(text);
-      case CsvFormat.FloatViewMobile:
-        return await parseFloatViewMobileCsv(text);
-    }
-
-    return {
-      source: DataSource.None,
-      data: [],
-      units: Units.Metric,
-      errors: [
-        new ParseError(
-          'Unrecognised CSV headers. Expected a Float Control, Floaty, VESC Tool, or Float View Mobile export.',
-          {
-            header: text.split(/\r?\n/, 1)[0] ?? '',
-          },
-        ),
-      ],
-    };
+    return await parseCsv(await file.text());
   }
 
   if (file.type === SupportedMimeTypes.Json || lowerName.endsWith('.json')) {
@@ -96,5 +74,39 @@ export async function parse(file: File): Promise<ParseResult> {
     data: [],
     units: Units.Metric,
     errors: [new ParseError('Unrecognised file!', file)],
+  };
+}
+
+async function parseCsv(text: string): Promise<ParseResult> {
+  switch (detectCsvFormat(text)) {
+    case CsvFormat.Floaty:
+      return await parseFloatyCsv(text);
+    case CsvFormat.FloatControl: {
+      const parsed = await parseFloatControlCsv(text);
+      return {
+        source: DataSource.FloatControl,
+        data: parsed.csv.data,
+        units: parsed.units,
+        errors: parsed.errors,
+      };
+    }
+    case CsvFormat.VescTool:
+      return await parseVescToolCsv(text);
+    case CsvFormat.FloatViewMobile:
+      return await parseFloatViewMobileCsv(text);
+  }
+
+  return {
+    source: DataSource.None,
+    data: [],
+    units: Units.Metric,
+    errors: [
+      new ParseError(
+        'Unrecognised CSV headers. Expected a Float Control, Floaty, VESC Tool, or Float View Mobile export.',
+        {
+          header: text.split(/\r?\n/, 1)[0] ?? '',
+        },
+      ),
+    ],
   };
 }
