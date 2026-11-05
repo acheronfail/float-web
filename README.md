@@ -1,6 +1,6 @@
 # Float View (web)
 
-A tool to view rides recorded with [Float Control] or [Floaty]. I made it so I could easily analyze specific parts of my ride when troubleshooting custom boards, whether I'm using a desktop or mobile device.
+A tool to view rides recorded with [Float Control], [Floaty], [VESC Tool], or [Float View Mobile]. I made it so I could easily analyze specific parts of my ride when troubleshooting custom boards, whether I'm using a desktop or mobile device.
 
 Use it here: <https://www.acheron.fail/float-view/>!
 
@@ -31,10 +31,14 @@ Now you'll have `Float View` all the time, even offline!
 
 ## How do I use it?
 
-1. Get on your board and record a ride with [Float Control] or [Floaty]
-2. Export your ride data (Float Control will put it in a `.csv.zip`, Floaty in a `.json` or `.csv`)
-3. Load it up in <https://acheronfail.github.io/float-view/> (if it's zipped, unzip it first!)
+1. Get on your board and record a ride with [Float Control], [Floaty], [VESC Tool], or [Float View Mobile]
+2. Export your ride data (Float Control uses `.csv.zip`, Floaty uses `.json` or `.csv`, VESC Tool and Float View Mobile use `.csv`)
+3. Load it up in <https://acheronfail.github.io/float-view/>
 4. Enjoy!
 
 [Float Control]: https://apps.apple.com/us/app/float-control-vesc-companion/id1590924299
 [Floaty]: https://play.google.com/store/apps/details?id=com.floaty.floatyapp&pcampaignid=web_share
+[VESC Tool]: https://vesc-project.com/vesc_tool
+[Float View Mobile]: https://github.com/acheronfail/float-view-mobile
+
+Float View Mobile CSV exports work with or without GPS. Enable GPS in Mobile's export settings to include a map route. Native `.floatview` archives are not supported yet.

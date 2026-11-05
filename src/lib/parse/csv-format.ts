@@ -7,12 +7,14 @@ export enum CsvFormat {
   FloatControl = 'float_control',
   Floaty = 'floaty',
   VescTool = 'vesc_tool',
+  FloatViewMobile = 'float_view_mobile',
   Unknown = 'unknown',
 }
 
 const FLOATY_SIGNATURE = ['timestamp', 'dutyCycle', 'batteryVolts', 'tripDistance'] as const;
 const FLOAT_CONTROL_SIGNATURE = [RowKey.Time, RowKey.Speed, RowKey.Duty] as const;
 const VESC_TOOL_SIGNATURE = ['ms_today', 'input_voltage', 'duty_cycle'] as const;
+const FLOAT_VIEW_MOBILE_SIGNATURE = ['sequence', 'elapsed_ms', 'ride_state', 'pack_voltage_v', 'duty_cycle'] as const;
 const rowKeys = new Set<string>(Object.values(RowKey));
 
 export const cleanCsvHeader = (header: string): string => header.replace(/^\uFEFF/, '').trim();
@@ -47,6 +49,7 @@ export function detectCsvFormat(text: string): CsvFormat {
     containsAll(rawHeaders, FLOATY_SIGNATURE) && CsvFormat.Floaty,
     containsAll(normalizedHeaders, FLOAT_CONTROL_SIGNATURE) && CsvFormat.FloatControl,
     containsAll(rawHeaders, VESC_TOOL_SIGNATURE) && CsvFormat.VescTool,
+    containsAll(rawHeaders, FLOAT_VIEW_MOBILE_SIGNATURE) && CsvFormat.FloatViewMobile,
   ].filter((format): format is CsvFormat => format !== false);
 
   return matches.length === 1 ? matches[0]! : CsvFormat.Unknown;

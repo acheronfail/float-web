@@ -163,6 +163,16 @@ export function extractGpsInformation(rows: RowWithIndex[], source: DataSource) 
     }
   }
 
+  // Mobile leaves GPS cells blank when no nearby fix is available. Keep the
+  // displayed position at the last fix instead of drawing a route to (0, 0).
+  // This only changes map coordinates; the imported samples retain missing fixes.
+  if (source === DataSource.FloatViewMobile && firstGoodPointIndex >= 0) {
+    for (let i = firstGoodPointIndex + 1; i < gpsPoints.length; ++i) {
+      const [lat, lon] = gpsPoints[i]!;
+      if (lat === 0 && lon === 0) gpsPoints[i] = gpsPoints[i - 1]!;
+    }
+  }
+
   // When Float Control starts recording a ride, it appears that the first few data points
   // have incorrect GPS data. If it's the start of the ride, it's (0, 0), but if it's a resumed
   // ride, then it seems to be the last known point from the paused ride.
@@ -189,7 +199,9 @@ export function extractGpsInformation(rows: RowWithIndex[], source: DataSource) 
 }
 
 export function hasAdcTelemetry(rows: RowWithIndex[]): boolean {
-  return rows.some((row) => row.adc1 !== 0 || row.adc2 !== 0);
+  return rows.some(
+    (row) => (Number.isFinite(row.adc1) && row.adc1 !== 0) || (Number.isFinite(row.adc2) && row.adc2 !== 0),
+  );
 }
 
 export function findPointsOfInterest(rows: RowWithIndex[]): PointOfInterest[] {

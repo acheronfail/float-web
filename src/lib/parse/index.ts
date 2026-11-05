@@ -3,6 +3,7 @@ import * as fflate from 'fflate';
 import { parseFloatControlCsv } from './float-control';
 import { parseFloatyCsv, parseFloatyJson } from './floaty';
 import { parseVescToolCsv } from './vesc-tool';
+import { parseFloatViewMobileCsv } from './float-view-mobile';
 import { DataSource, Units, type RowWithIndex } from './types';
 import { ParseError } from './errors';
 import { CsvFormat, detectCsvFormat } from './csv-format';
@@ -67,6 +68,8 @@ export async function parse(file: File): Promise<ParseResult> {
       }
       case CsvFormat.VescTool:
         return await parseVescToolCsv(text);
+      case CsvFormat.FloatViewMobile:
+        return await parseFloatViewMobileCsv(text);
     }
 
     return {
@@ -74,9 +77,12 @@ export async function parse(file: File): Promise<ParseResult> {
       data: [],
       units: Units.Metric,
       errors: [
-        new ParseError('Unrecognised CSV headers. Expected a Float Control, Floaty, or VESC Tool export.', {
-          header: text.split(/\r?\n/, 1)[0] ?? '',
-        }),
+        new ParseError(
+          'Unrecognised CSV headers. Expected a Float Control, Floaty, VESC Tool, or Float View Mobile export.',
+          {
+            header: text.split(/\r?\n/, 1)[0] ?? '',
+          },
+        ),
       ],
     };
   }

@@ -3,6 +3,8 @@ import { describe, expect, test } from 'vitest';
 import fcMetricCsv from './__fixtures__/fc_metric.csv?raw';
 import floatyCsv from './__fixtures__/floaty.csv?raw';
 import vescMetricCsv from './__fixtures__/vesc_metric.csv?raw';
+import mobileCsv from './__fixtures__/float_view_mobile.csv?raw';
+import mobileGpsCsv from './__fixtures__/float_view_mobile_gps.csv?raw';
 import { parse } from './index';
 
 class MockFile extends File {
@@ -20,6 +22,27 @@ class MockFile extends File {
 }
 
 describe(parse.name, () => {
+  test.each([mobileCsv, mobileGpsCsv])('routes Mobile CSV exports with or without GPS', async (text) => {
+    const result = await parse(new MockFile([text], 'mobile.csv', { type: 'text/csv' }));
+    expect(result.source).toBe('float_view_mobile');
+    expect(result.errors).toEqual([]);
+    expect(result.data).toHaveLength(3);
+  });
+
+  test('detects Mobile headers with BOM, quotes, whitespace, and no MIME type', async () => {
+    const text = '\uFEFF"sequence"," elapsed_ms ","ride_state","pack_voltage_v","duty_cycle"\r\n1,0,riding,80,0.5\r\n';
+    const result = await parse(new MockFile([text], 'mobile.CSV'));
+    expect(result.source).toBe('float_view_mobile');
+    expect(result.errors).toEqual([]);
+    expect(result.data[0]).toMatchObject({ time: 0, voltage: 80, duty: 50 });
+  });
+
+  test('does not mistake shared Mobile headers for another supported format', async () => {
+    const result = await parse(new MockFile(['erpm,duty_cycle\n1000,0.5\n'], 'other.csv'));
+    expect(result.source).toBe('none');
+    expect(result.errors).toHaveLength(1);
+  });
+
   test('routes semicolon-delimited CSV to VESC Tool parser', async () => {
     const result = await parse(new MockFile([vescMetricCsv], 'vesc.csv', { type: 'text/csv' }));
     expect(result.source).toBe('vesc_tool');

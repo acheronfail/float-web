@@ -31,6 +31,23 @@ const makeRow = (overrides: Partial<RowWithIndex> = {}): RowWithIndex => ({
 });
 
 describe(extractGpsInformation.name, () => {
+  test('holds the last Mobile fix through internal and trailing gaps without changing samples', () => {
+    const rows = [
+      makeRow({ gps_latitude: -35, gps_longitude: 139 }),
+      makeRow({ index: 1 }),
+      makeRow({ index: 2, gps_latitude: -36, gps_longitude: 140 }),
+      makeRow({ index: 3 }),
+    ];
+    expect(extractGpsInformation(rows, DataSource.FloatViewMobile).gpsPoints).toEqual([
+      [-35, 139],
+      [-35, 139],
+      [-36, 140],
+      [-36, 140],
+    ]);
+    expect(rows[1]!.gps_latitude).toBe(0);
+    expect(rows[3]!.gps_longitude).toBe(0);
+    expect(extractGpsInformation([makeRow()], DataSource.FloatViewMobile).gpsPoints).toEqual([[0, 0]]);
+  });
   test('replaces leading (0,0) gps points with first non-zero coordinate for all sources', () => {
     const rows: RowWithIndex[] = [
       makeRow({ index: 0, time: 0, gps_latitude: 0, gps_longitude: 0 }),
@@ -39,7 +56,7 @@ describe(extractGpsInformation.name, () => {
       makeRow({ index: 3, time: 3, gps_latitude: -37.82, gps_longitude: 144.97 }),
     ];
 
-    const sources = [DataSource.FloatControl, DataSource.Floaty, DataSource.VescTool];
+    const sources = [DataSource.FloatControl, DataSource.Floaty, DataSource.VescTool, DataSource.FloatViewMobile];
     for (const source of sources) {
       const { gpsPoints } = extractGpsInformation(rows, source);
 

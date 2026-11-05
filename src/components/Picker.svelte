@@ -32,6 +32,7 @@
         <strong>Float Control</strong>
       </li>
       <li>an exported <span class="font-mono">CSV</span> file from <strong>VESC Tool</strong></li>
+      <li>an exported <span class="font-mono">CSV</span> file from <strong>Float View Mobile</strong></li>
       <li>
         an exported <span class="font-mono">JSON</span> or <span class="font-mono">CSV</span> file from
         <strong>Floaty</strong>

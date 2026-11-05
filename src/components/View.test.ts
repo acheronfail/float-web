@@ -2,6 +2,8 @@ import { expect, test } from 'vitest';
 import { render, waitFor } from '@testing-library/svelte';
 import App from './View.svelte';
 import floatyJson from '../lib/parse/__fixtures__/floaty.json';
+import mobileCsv from '../lib/parse/__fixtures__/float_view_mobile.csv?raw';
+import mobileGpsCsv from '../lib/parse/__fixtures__/float_view_mobile_gps.csv?raw';
 
 // Disable dev mode for testing.
 import.meta.env.DEV = false;
@@ -39,6 +41,19 @@ const createFileList = (files: File[]) =>
     length: files.length,
     item: (index: number) => files[index] || null,
   }) as unknown as FileList;
+
+test.each([mobileCsv, mobileGpsCsv])('opens Mobile CSV exports in the viewer', async (text) => {
+  const screen = startApp();
+  const input = screen.container.querySelector<HTMLInputElement>('#ride-file-picker')!;
+  Object.defineProperty(input, 'files', {
+    value: createFileList([new MockFile([text], 'mobile.csv', { type: 'text/csv' })]),
+    writable: true,
+  });
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+  await waitFor(() => expect(screen.getByTestId('close-ride-button')).toBeInTheDocument());
+  expect(screen.getByTestId('map')).toBeInTheDocument();
+  expect(screen.getByTestId('chart_speed')).toBeInTheDocument();
+});
 
 test('Floaty Integration', async () => {
   const screen = startApp();
