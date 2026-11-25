@@ -1,5 +1,10 @@
 # Float View (web)
 
+> [!IMPORTANT]
+> The native Float View apps are better than this web version. They offer a better ride analysis experience and can record rides directly from your board.
+>
+> [App Store (iOS)](https://apps.apple.com/app/id6823768488) · [Google Play (Android)](https://play.google.com/store/apps/details?id=fail.acheron.floatview) · [GitHub releases (mobile and desktop)](https://github.com/acheronfail/float-view-mobile/releases)
+
 A tool to view rides recorded with [Float Control], [Floaty], [VESC Tool], or [Float View Mobile]. I made it so I could easily analyze specific parts of my ride when troubleshooting custom boards, whether I'm using a desktop or mobile device.
 
 Use it here: <https://www.acheron.fail/float-view/>!

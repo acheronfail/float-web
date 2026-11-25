@@ -25,6 +25,14 @@
 
 <Modal open={!file} closeHandler={() => (file = demoFile)} closeText="view demo ride" title="Welcome!" {...rest}>
   <div class="flex flex-col justify-between items-center gap-4">
+    <div class="w-full rounded border border-slate-600 bg-slate-900 p-3 text-sm">
+      <Link
+        class="font-bold"
+        href="https://github.com/acheronfail/float-view-mobile/releases"
+        label="Download Float View for mobile or desktop"
+      />
+      <p class="mt-1">The native apps offer better ride analysis and can record rides directly from your board.</p>
+    </div>
     <p>To get started, please open either:</p>
     <ul class="list-disc list-inside text-left">
       <li>
