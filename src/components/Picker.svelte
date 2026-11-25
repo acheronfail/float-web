@@ -12,8 +12,13 @@
   import { demoFile } from '../lib/parse/float-control';
   import Link from './Link.svelte';
   import { supportedMimeTypeString } from '../lib/parse';
+  import appStoreBadge from '../assets/app-store-badge.svg';
+  import googlePlayBadge from '../assets/google-play-badge.png';
 
   let { file = $bindable(), ...rest }: Props = $props();
+
+  const downloadsOpenKey = 'fv_picker_downloads_open';
+  let downloadsOpen = $state(localStorage.getItem(downloadsOpenKey) !== 'false');
 
   const onchange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.currentTarget;
@@ -25,27 +30,39 @@
 
 <Modal open={!file} closeHandler={() => (file = demoFile)} closeText="view demo ride" title="Welcome!" {...rest}>
   <div class="flex flex-col justify-between items-center gap-4">
-    <div class="w-full rounded border border-slate-600 bg-slate-900 p-3 text-sm">
-      <h3 class="font-bold">Download Float View</h3>
-      <p class="mt-1">The native apps offer better ride analysis and can record rides directly from your board.</p>
-      <div class="my-3 grid grid-cols-2 gap-2">
-        <a
-          class="rounded border border-slate-600 bg-slate-800 p-2 hover:border-sky-300 focus-visible:outline-sky-300"
-          href="https://apps.apple.com/app/id6823768488"
-        >
-          <span class="block font-bold text-sky-300">iOS</span>
-          <span>App Store</span>
-        </a>
-        <a
-          class="rounded border border-slate-600 bg-slate-800 p-2 hover:border-sky-300 focus-visible:outline-sky-300"
-          href="https://play.google.com/store/apps/details?id=fail.acheron.floatview"
-        >
-          <span class="block font-bold text-sky-300">Android</span>
-          <span>Google Play</span>
-        </a>
+    <details
+      class="group w-full rounded border border-slate-600 bg-slate-900 text-sm"
+      open={downloadsOpen}
+      ontoggle={({ currentTarget }) => {
+        const { open } = currentTarget;
+        if (open !== downloadsOpen) {
+          downloadsOpen = open;
+          localStorage.setItem(downloadsOpenKey, String(open));
+        }
+      }}
+    >
+      <summary
+        class="flex cursor-pointer items-center gap-2 rounded p-3 text-left font-bold text-sky-300 hover:bg-slate-800 focus-visible:outline-sky-300 [&::-webkit-details-marker]:hidden"
+      >
+        <span class="inline-block group-open:rotate-90" aria-hidden="true">&gt;</span>
+        Download Float View
+      </summary>
+      <div class="px-3 pb-3">
+        <p>The native apps offer better ride analysis and can record rides directly from your board.</p>
+        <div class="my-1 flex flex-wrap items-center justify-center gap-x-2">
+          <a class="rounded focus-visible:outline-sky-300" href="https://apps.apple.com/app/id6823768488">
+            <img class="h-10 w-auto" src={appStoreBadge} alt="Download Float View on the App Store" />
+          </a>
+          <a
+            class="rounded focus-visible:outline-sky-300"
+            href="https://play.google.com/store/apps/details?id=fail.acheron.floatview"
+          >
+            <img class="h-[60px] w-auto" src={googlePlayBadge} alt="Get Float View on Google Play" />
+          </a>
+        </div>
+        <Link href="https://github.com/acheronfail/float-view-mobile" label="Float View on GitHub" />
       </div>
-      <Link href="https://github.com/acheronfail/float-view-mobile" label="Float View on GitHub" />
-    </div>
+    </details>
     <p>To get started, please open either:</p>
     <ul class="list-disc list-inside text-left">
       <li>
