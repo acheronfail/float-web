@@ -10,7 +10,7 @@ const app = params.get('app');
 const canonical = document.createElement('link');
 canonical.rel = 'canonical';
 canonical.href =
-  app === 'renderer' ? 'https://www.acheron.fail/float-view/?app=renderer' : 'https://www.acheron.fail/float-view/';
+  app === 'renderer' ? 'https://www.acheron.fail/float-web/?app=renderer' : 'https://www.acheron.fail/float-web/';
 document.head.appendChild(canonical);
 
 switch (app) {

@@ -68,8 +68,8 @@
       </li>
       <li>
         Source code available here: <Link
-          href="https://github.com/acheronfail/float-view"
-          label="acheronfail/float-view"
+          href="https://github.com/acheronfail/float-web"
+          label="acheronfail/float-web"
         />
       </li>
       <li>

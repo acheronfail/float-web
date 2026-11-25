@@ -1,4 +1,4 @@
-# Float View (web)
+# Float Web (previously Float View)
 
 > [!IMPORTANT]
 > The native Float View apps are better than this web version. They offer a better ride analysis experience and can record rides directly from your board.
@@ -7,7 +7,7 @@
 
 A tool to view rides recorded with [Float Control], [Floaty], [VESC Tool], or [Float View Mobile]. I made it so I could easily analyze specific parts of my ride when troubleshooting custom boards, whether I'm using a desktop or mobile device.
 
-Use it here: <https://www.acheron.fail/float-view/>!
+Use it here: <https://www.acheron.fail/float-web/>!
 
 Main features:
 
@@ -20,11 +20,11 @@ Main features:
 
 ## Demo
 
-![demo image of Float View in browser](./.github/demo.jpg)
+![demo image of Float Web in browser](./.github/demo.jpg)
 
 Also works great on mobile devices:
 
-<img alt="demo image of Float View on mobile" src="./.github/mobile.png" width="35%">
+<img alt="demo image of Float Web in a mobile browser" src="./.github/mobile.png" width="35%">
 
 And can be saved as an app to your phone's home screen, by:
 
@@ -32,13 +32,13 @@ And can be saved as an app to your phone's home screen, by:
 2. Clicking the Share button
 3. Selecting `Add to Home Screen`
 
-Now you'll have `Float View` all the time, even offline!
+Now you can use Float Web even offline!
 
 ## How do I use it?
 
 1. Get on your board and record a ride with [Float Control], [Floaty], [VESC Tool], or [Float View Mobile]
 2. Export your ride data (Float Control uses `.csv.zip`, Floaty uses `.json` or `.csv`, VESC Tool and Float View Mobile use `.csv`)
-3. Load it up in <https://acheronfail.github.io/float-view/>
+3. Load it up in <https://www.acheron.fail/float-web/>
 4. Enjoy!
 
 [Float Control]: https://apps.apple.com/us/app/float-control-vesc-companion/id1590924299

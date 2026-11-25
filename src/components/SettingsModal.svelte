@@ -121,7 +121,7 @@
     </div>
 
     <div class="flex flex-row justify-center align-center">
-      <a href="/float-view/?app=renderer">
+      <a href="?app=renderer">
         <Button>Looking for Float Renderer? Click here!</Button>
       </a>
     </div>

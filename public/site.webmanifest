@@ -1,9 +1,9 @@
 {
-  "name": "Float View",
-  "short_name": "Float View",
+  "name": "Float Web",
+  "short_name": "Float Web",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "./android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     }

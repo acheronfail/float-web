@@ -25,7 +25,7 @@
   gap-4 bg-slate-950 border-b h-[--header-height] px-4 whitespace-nowrap"
 >
   <h1 class="font-bold text-lg grow flex flex-rol justify-start">
-    Float View
+    Float Web
     {#if file === demoFile}
       <span class="w-[1px] text-xs font-mono text-fuchsia-500"> (demo) </span>
     {/if}
